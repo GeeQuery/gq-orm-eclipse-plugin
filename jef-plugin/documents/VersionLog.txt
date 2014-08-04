@@ -1,0 +1,8 @@
+
+Version 0.00(未发布)
+
+待完成特性
+1、分析Java文件和编译OBD文件过程中使用进度条
+2、在工具栏增加操作菜单
+3、将TableColumn改为TreeViewColumn，提供树形层次显示。
+4、读取Eclipse的never used Import警告，并且输出。 

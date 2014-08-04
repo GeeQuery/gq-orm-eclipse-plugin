@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+	<!-- 增强实体 (工程)-->
+	<extension point="org.eclipse.ui.popupMenus">
+		<objectContribution objectClass="org.eclipse.core.resources.IProject"
+			id="obdclips.contribution1" adaptable="true">
+			<menu label="JEF" path="additions" id="jef.menu">
+			<separator name="jefgroup" /></menu>
+			<action label="Enhance JEF Entities" class="com.gc.jef.actions.popup.EntityEnhanceAction"
+				menubarPath="jef.menu/jefgroup" enablesFor="1" id="jef.enhancement">
+			</action>
+			<action label="Add Jef Dependency" class="com.gc.jef.actions.popup.AddJefLibAction"
+				menubarPath="jef.menu/jefgroup" enablesFor="1" id="jef.enhancement">
+			</action>
+		</objectContribution>
+	</extension>
+	<!-- 生成实体类 （文件夹，包）-->
+	<extension point="org.eclipse.ui.popupMenus">
+		<objectContribution objectClass="org.eclipse.core.resources.IFolder"
+			id="obdclips.contribution2" adaptable="true">
+			<menu label="JEF" path="additions" id="jef.menu"></menu>
+			<action label="Generate JEF Entity from Database" class="com.gc.jef.actions.popup.EntityGenerateAction"
+				menubarPath="jef.menu" enablesFor="1" id="jef.fromDbAction">
+			</action>
+		</objectContribution>
+	</extension>
+	<extension point="org.eclipse.ui.popupMenus">
+		<objectContribution objectClass="org.eclipse.core.resources.IFolder"
+			id="obdclips.contribution4" adaptable="true">
+			<menu label="JEF" path="additions" id="jef.menu"></menu>
+			<action label="Generate JEF Entity from PDM" class="com.gc.jef.actions.popup.EntityPDMGenerateAction"
+				menubarPath="jef.menu" enablesFor="1" id="jef.fromPdmAction">
+			</action>
+		</objectContribution>
+	</extension>
+	<!-- 转换实体（文件）-->
+	<extension point="org.eclipse.ui.popupMenus">
+		<objectContribution objectClass="org.eclipse.core.resources.IFile"
+			id="obdclips.contribution3" adaptable="true">
+			<menu label="JEF" path="additions" id="jef.menu"></menu>
+			<action label="Convert POJO to a JEF Entity" class="com.gc.jef.actions.popup.EntityConvertAction"
+				menubarPath="jef.menu" enablesFor="1" id="jef.CompileAction">
+			</action>
+		</objectContribution>
+	</extension>
+	<extension point="org.eclipse.ui.propertyPages">
+		<page name="Jef-Plugin" class="com.gc.jef.preferences.RootPage"
+			id="com.gc.jef.preferences.RootPage" />
+		<!--<page name="Advanced Settings" category="com.gc.jef.preferences.RootPage" 
+			class="com.gc.jef.preferences.AdvancedPage" id="com.gc.jef.preferences.AdvancedPage" 
+		/> -->
+	</extension>
+
+	<!-- 运行的句柄 -->
+	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
+		<launchConfigurationType id="com.gc.jef.launchConfigurations.JefConfiguration" 
+			delegate="com.gc.jef.launchConfigurations.JefConfigurationDelegate"
+			modes="run, debug" 
+			public="true"
+			sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+			sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer"
+			name="JEF Application" />
+		<launchConfigurationType id="com.gc.jef.launchConfigurations.JefWebConfiguration"
+			delegate="com.gc.jef.launchConfigurations.JefWebConfigurationDelegate"
+			modes="run, debug"
+			public="true"
+			sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+			sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer"
+			name="JEF Web Application" />
+	</extension>
+	<!-- 定义图标 -->
+	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+		<launchConfigurationTypeImage icon="icons/jef.gif"
+			configTypeID="com.gc.jef.launchConfigurations.JefConfiguration" id="com.gc.jef.JefImage">
+		</launchConfigurationTypeImage>
+		<launchConfigurationTypeImage icon="icons/jefweb.gif" 
+			configTypeID="com.gc.jef.launchConfigurations.JefWebConfiguration" id="com.gc.jef.JefWebImage">
+		</launchConfigurationTypeImage>
+	</extension>
+
+	<!-- 配置页面 -->
+	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+		<launchConfigurationTabGroup type="com.gc.jef.launchConfigurations.JefConfiguration"
+			class="org.eclipse.jdt.internal.debug.ui.launcher.LocalJavaApplicationTabGroup"
+			description="" id="com.gc.jef.launchConfigurations.JefConfigurationTabs" />
+		<launchConfigurationTabGroup type="com.gc.jef.launchConfigurations.JefWebConfiguration"
+			class="org.eclipse.jdt.internal.debug.ui.launcher.LocalJavaApplicationTabGroup"
+			description="" id="com.gc.jef.launchConfigurations.JefWebConfigurationTabs" />
+	</extension>
+	<!-- 运行快捷菜单 -->
+	<extension point="org.eclipse.debug.ui.launchShortcuts">
+		<shortcut class="com.gc.jef.launchConfigurations.JefLaunchShortcut"
+			id="com.gc.jef.launchConfigurations.JefLaunchShortcut"
+			label="JEF Application"
+			icon="icons/jef.gif"
+			modes="run, debug">
+			<contextualLaunch>
+				<enablement>
+				 <with variable="selection"><count value="1"/></with>
+				</enablement>
+			</contextualLaunch>
+		</shortcut>
+		<shortcut class="com.gc.jef.launchConfigurations.JefWebLaunchShortcut"
+			id="com.gc.jef.launchConfigurations.JefWebLaunchShortcut"
+			label="JEF Web Application"
+			icon="icons/jefweb.gif"
+			modes="run, debug">
+			<contextualLaunch>
+				<enablement>
+				<with variable="selection"><count value="1"/></with>
+				</enablement>
+			</contextualLaunch>
+		</shortcut>
+ 	</extension>
+</plugin>

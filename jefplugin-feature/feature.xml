@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="jef.feature"
+      label="Jef Support Feature"
+      version="1.2.100">
+
+   <description url="http://pc-jiyi.hikvision.com:8081/nexus/jef-plugin">
+      JEF-Support plug-in for Eclipse具有以下功能:
+1、从数据库中/PDM中导入存储模型
+2、在普通工程中添加JEF依赖项
+3、选择实体进行增强
+4、将POJO类改写为JEF entity
+5、提供Jef Application和Web Application两种快速运行调试工具
+   </description>
+
+   <copyright>
+      Copyright 2010-2011, All rights resverd.
+   </copyright>
+
+   <license url="http://asiainfo-linkage.com">
+      JEF - Copyright 2010-2013
+      Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+ 
+       http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+      
+      如果你同意上述协议，请选择&apos;I accept terms of the license agreemenet&apos;.
+   </license>
+
+   <url>
+      <update url="http://pc-jiyi.hikvision.com:8081/nexus/jef-plugin"/>
+   </url>
+
+   <plugin
+         id="jef-plugin"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+</feature>
