@@ -5,8 +5,6 @@ apache-openejb/
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 .settings
-.project
-.classpath
 
 
 # Package Files #
