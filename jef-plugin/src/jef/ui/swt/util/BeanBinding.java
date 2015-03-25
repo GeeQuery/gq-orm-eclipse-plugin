@@ -21,7 +21,6 @@ import jef.tools.reflect.ClassWrapper;
 import jef.ui.model.InputModel;
 import jef.ui.model.TreeNode;
 import jef.ui.swt.GridLayoutHelper;
-import jef.ui.swt.GridLayoutHelper.ButtonListener;
 import jef.ui.swt.Provider;
 import jef.ui.swt.util.SWTUtils.Columns;
 
@@ -77,13 +76,13 @@ public class BeanBinding {
 	}
 
 	public Tree createTree(String fieldName, jef.ui.model.TreeNode root, int width, int colSpan, boolean hideRoot, Provider... provs) {
-		Tree tree = GridLayoutHelper.createTree(shell, root, "", width, colSpan, SWT.MULTI | SWT.CHECK ,hideRoot,provs);
+		Tree tree = GridLayoutHelper.createTree(shell, root, "", width, colSpan, SWT.MULTI | SWT.CHECK, hideRoot, provs);
 		bindMapping.put(fieldName, tree);
 		return tree;
 	}
-	
+
 	public Tree createSingleTree(String fieldName, jef.ui.model.TreeNode root, int width, int colSpan, boolean hideRoot, Provider... provs) {
-		Tree tree = GridLayoutHelper.createTree(shell, root, "", width, colSpan, SWT.SINGLE,hideRoot,provs);
+		Tree tree = GridLayoutHelper.createTree(shell, root, "", width, colSpan, SWT.SINGLE, hideRoot, provs);
 		bindMapping.put(fieldName, tree);
 		return tree;
 	}
@@ -109,13 +108,13 @@ public class BeanBinding {
 		bindMapping.put(fieldName, table);
 		return table;
 	}
-	
+
 	public Text createTextArea(String fieldName, int width, int colSpan, boolean bind) {
 		Text c;
 		Assert.isTrue(w.isReadableProperty(fieldName));
 		Assert.isTrue(w.isWritableProperty(fieldName));
 		c = GridLayoutHelper.createTextArea(shell, width);
-		if(bind)
+		if (bind)
 			bindMapping.put(fieldName, c);
 		if (colSpan > 1)
 			GridLayoutHelper.setColSpan(c, colSpan);
@@ -145,37 +144,39 @@ public class BeanBinding {
 		return c;
 	}
 
-	public Button createButton(String text, String methodName, ButtonListener li) {
-		Button b = GridLayoutHelper.createButton(shell, text, methodName, li,SWT.NONE);
+	public Button createButton(String text, ButtonListener li) {
+		Button b = GridLayoutHelper.createButton(shell, text, li, SWT.NONE);
 		b.setData(this);
 		return b;
 	}
-	
+
 	/**
 	 * 创建CheckBox
+	 * 
 	 * @param fieldName
 	 * @param text
 	 * @param methodName
 	 * @param li
 	 * @return
 	 */
-	public Button createCheckBox(String fieldName,String text,String methodName, ButtonListener li) {
-		Button b = GridLayoutHelper.createButton(shell, text, methodName, li,SWT.CHECK);
+	public Button createCheckBox(String fieldName, String text, ButtonListener li) {
+		Button b = GridLayoutHelper.createButton(shell, text, li, SWT.CHECK);
 		b.setData(this);
-		if(StringUtils.isNotEmpty(fieldName)){
-			bindMapping.put(fieldName, b);	
+		if (StringUtils.isNotEmpty(fieldName)) {
+			bindMapping.put(fieldName, b);
 		}
 		return b;
 	}
 
 	/**
 	 * 创建ListBox
+	 * 
 	 * @param fieldName
 	 * @param items
 	 * @param width
 	 */
-	public org.eclipse.swt.widgets.List createListBox(String fieldName, Map<String, ?> items, boolean multi,int width) {
-		org.eclipse.swt.widgets.List list = GridLayoutHelper.createList(shell, items,multi);
+	public org.eclipse.swt.widgets.List createListBox(String fieldName, Map<String, ?> items, boolean multi, int width) {
+		org.eclipse.swt.widgets.List list = GridLayoutHelper.createList(shell, items, multi);
 		GridLayoutHelper.setWidth(list, width);
 		bindMapping.put(fieldName, list);
 		return list;
@@ -213,41 +214,41 @@ public class BeanBinding {
 					}
 				} else if (control instanceof Combo) {
 					Combo co = (Combo) control;
-					if(co.getData()!=null){
+					if (co.getData() != null) {
 						Object[] options = (Object[]) co.getData();
 						int index = ArrayUtils.indexOf(options, obj);
 						if (index != ArrayUtils.INDEX_NOT_FOUND) {
 							co.setText(obj.toString());
-						}	
-					}else{
-						String value=StringUtils.toString(obj);
-						if(value.length()>0){
-							if(!ArrayUtils.contains(co.getItems(), value)){
+						}
+					} else {
+						String value = StringUtils.toString(obj);
+						if (value.length() > 0) {
+							if (!ArrayUtils.contains(co.getItems(), value)) {
 								co.add(value);
 							}
 						}
 						co.setText(value);
 					}
 				} else if (control instanceof Button) {
-					Button b=(Button)control;
-					if(obj instanceof Boolean){
-						b.setSelection((Boolean)obj);
+					Button b = (Button) control;
+					if (obj instanceof Boolean) {
+						b.setSelection((Boolean) obj);
 					}
 				} else if (control instanceof Tree) {
 					Tree tree = (Tree) control;
-					boolean isMulti=(tree.getStyle() & SWT.MULTI)>0;
-					if(isMulti){
-						List<?> list=(List<?>)obj;
+					boolean isMulti = (tree.getStyle() & SWT.MULTI) > 0;
+					if (isMulti) {
+						List<?> list = (List<?>) obj;
 						for (TreeItem item : tree.getItems()) {
 							TreeNode node = (TreeNode) item.getData();
-							if(list.contains(node.getValue())){
+							if (list.contains(node.getValue())) {
 								item.setChecked(true);
 							}
-						}	
-					}else{
+						}
+					} else {
 						for (TreeItem item : tree.getItems()) {
 							TreeNode node = (TreeNode) item.getData();
-							if(obj.equals(node.getValue())){
+							if (obj.equals(node.getValue())) {
 								tree.select(item);
 								break;
 							}
@@ -255,12 +256,12 @@ public class BeanBinding {
 					}
 				} else if (control instanceof org.eclipse.swt.widgets.List) {
 					org.eclipse.swt.widgets.List list = (org.eclipse.swt.widgets.List) control;
-					Map<String, ?> data=(Map<String, ?>)list.getData();
+					Map<String, ?> data = (Map<String, ?>) list.getData();
 					if (obj instanceof List) {
-						for(Object v: (List)obj){
-							String key=getKeyByValue(data,v);
-							int index=ArrayUtils.indexOf(list.getItems(), key);
-							if(index>-1)
+						for (Object v : (List) obj) {
+							String key = getKeyByValue(data, v);
+							int index = ArrayUtils.indexOf(list.getItems(), key);
+							if (index > -1)
 								list.select(index);
 						}
 					} else {
@@ -276,9 +277,9 @@ public class BeanBinding {
 		}
 	}
 
-	private String getKeyByValue(Map<String, ?> data,Object v) {
-		for(Entry<String,?> e: data.entrySet()){
-			if(ObjectUtils.equals(v, e.getValue())){
+	private String getKeyByValue(Map<String, ?> data, Object v) {
+		for (Entry<String, ?> e : data.entrySet()) {
+			if (ObjectUtils.equals(v, e.getValue())) {
 				return e.getKey();
 			}
 		}
@@ -348,9 +349,9 @@ public class BeanBinding {
 					}
 				} else if (control instanceof Combo) {
 					Combo co = (Combo) control;
-					if(co.getData()==null){
+					if (co.getData() == null) {
 						w.setPropertyValue(fieldName, co.getText());
-					}else{
+					} else {
 						Object[] options = (Object[]) co.getData();
 						int index = ArrayUtils.indexOf(co.getItems(), co.getText());
 						if (index != -1) {
@@ -363,30 +364,30 @@ public class BeanBinding {
 					w.setPropertyValue(fieldName, ((Button) control).getSelection());
 				} else if (control instanceof Tree) {
 					Tree tree = (Tree) control;
-					boolean isMulti=(tree.getStyle() & SWT.MULTI)>0;
-					if(isMulti){
-						List<Object> result=new ArrayList<Object>();
+					boolean isMulti = (tree.getStyle() & SWT.MULTI) > 0;
+					if (isMulti) {
+						List<Object> result = new ArrayList<Object>();
 						for (TreeItem item : tree.getItems()) {
-							if(item.getChecked()){
+							if (item.getChecked()) {
 								TreeNode node = (TreeNode) item.getData();
-								result.add(node.getValue());	
+								result.add(node.getValue());
 							}
 						}
 						w.setPropertyValue(fieldName, result);
-					}else{
-						TreeItem[] items=tree.getSelection();
-						if(items.length==0){
+					} else {
+						TreeItem[] items = tree.getSelection();
+						if (items.length == 0) {
 							w.setPropertyValue(fieldName, null);
-						}else{
-							TreeNode node=(TreeNode)items[0].getData();
+						} else {
+							TreeNode node = (TreeNode) items[0].getData();
 							w.setPropertyValue(fieldName, node.getValue());
 						}
 					}
-				} else if(control instanceof org.eclipse.swt.widgets.List) {
+				} else if (control instanceof org.eclipse.swt.widgets.List) {
 					org.eclipse.swt.widgets.List list = (org.eclipse.swt.widgets.List) control;
-					Map<String,?>  data=(Map<String,?>)list.getData();
-					List l=new ArrayList<Object>();
-					for(String str:list.getSelection()){
+					Map<String, ?> data = (Map<String, ?>) list.getData();
+					List l = new ArrayList<Object>();
+					for (String str : list.getSelection()) {
 						l.add(data.get(str));
 					}
 					w.setPropertyValue(fieldName, l);
@@ -516,8 +517,9 @@ public class BeanBinding {
 	public void createDateInput(String fieldName, int colSpan, int width, final boolean isWithTime) {
 		final Text data = createTextInput(fieldName, width, colSpan, false);
 		ButtonListener bs = new ButtonListener() {
-			@SuppressWarnings("unused")
-			void runme(Button b) {
+
+			@Override
+			public void onClick(Button btn) {
 				DateFormat format;
 				if (isWithTime) {
 					format = DateFormats.DATE_TIME_CS.get();
@@ -538,8 +540,9 @@ public class BeanBinding {
 				if (dialog.open() == Dialog.OK) {
 					data.setText(format.format(dialog.data));
 				}
+
 			}
 		};
-		createButton("...", "runme", bs);
+		createButton("...", bs);
 	}
 }

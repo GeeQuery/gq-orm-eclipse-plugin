@@ -80,8 +80,8 @@ public final class PluginHelper implements IJavaLaunchConfigurationConstants {
 
 	private static IClasspathEntry[] getJefEntries() {
 		return new IClasspathEntry[] { 
-				JavaCore.newVariableEntry(new Path("JEF_HOME/common-core-1.9.5-SNAPSHOT.jar"), null, null), 
-				JavaCore.newVariableEntry(new Path("JEF_HOME/common-orm-1.9.5-SNAPSHOT.jar"), null, null),
+				JavaCore.newVariableEntry(new Path("JEF_HOME/common-core-2.0.0-SNAPSHOT.jar"), null, null), 
+				JavaCore.newVariableEntry(new Path("JEF_HOME/common-orm-2.0.0-SNAPSHOT.jar"), null, null),
 				JavaCore.newVariableEntry(new Path("JEF_HOME/commons-lang-2.5.jar"), null, null),
 				JavaCore.newVariableEntry(new Path("JEF_HOME/geronimo-jpa_2.0_spec-1.1.jar"), null, null),
 				JavaCore.newVariableEntry(new Path("JEF_HOME/javaparser-1.0.8.jar"), null, null),
@@ -98,9 +98,9 @@ public final class PluginHelper implements IJavaLaunchConfigurationConstants {
 				JavaCore.newVariableEntry(new Path("JEF_HOME/jsp-api-2.1.jar"), null, null),
 				JavaCore.newVariableEntry(new Path("JEF_HOME/ecj-4.2.2.jar"), null, null),
 				///////////////////////////////////////////////////////////////////
-				JavaCore.newVariableEntry(new Path("JEF_HOME/common-core-1.9.5-SNAPSHOT.jar"), null, null),
-				JavaCore.newVariableEntry(new Path("JEF_HOME/common-net-1.9.5-SNAPSHOT.jar"), null, null),
-				JavaCore.newVariableEntry(new Path("JEF_HOME/common-orm-1.9.5-SNAPSHOT.jar"), null, null),
+				JavaCore.newVariableEntry(new Path("JEF_HOME/common-core-1.9.5.RELEASE.jar"), null, null),
+				JavaCore.newVariableEntry(new Path("JEF_HOME/common-net-1.9.5.RELEASE.jar"), null, null),
+				JavaCore.newVariableEntry(new Path("JEF_HOME/common-orm-1.9.5.RELEASE.jar"), null, null),
 				JavaCore.newVariableEntry(new Path("JEF_HOME/jef-jetty-731.jar"), null, null),
 				JavaCore.newVariableEntry(new Path("JEF_HOME/xercesImpl-2.9.1.jar"), null, null),
 				JavaCore.newVariableEntry(new Path("JEF_HOME/jef-jasper.jar"), null, null)

@@ -50,8 +50,9 @@
 			class="com.gc.jef.preferences.AdvancedPage" id="com.gc.jef.preferences.AdvancedPage" 
 		/> -->
 	</extension>
-
-	<!-- 运行的句柄 -->
+	
+	
+	<!-- 运行的句柄 
 	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
 		<launchConfigurationType id="com.gc.jef.launchConfigurations.JefConfiguration" 
 			delegate="com.gc.jef.launchConfigurations.JefConfigurationDelegate"
@@ -68,7 +69,8 @@
 			sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer"
 			name="JEF Web Application" />
 	</extension>
-	<!-- 定义图标 -->
+	-->
+	<!-- 定义图标 
 	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
 		<launchConfigurationTypeImage icon="icons/jef.gif"
 			configTypeID="com.gc.jef.launchConfigurations.JefConfiguration" id="com.gc.jef.JefImage">
@@ -77,8 +79,8 @@
 			configTypeID="com.gc.jef.launchConfigurations.JefWebConfiguration" id="com.gc.jef.JefWebImage">
 		</launchConfigurationTypeImage>
 	</extension>
-
-	<!-- 配置页面 -->
+	-->
+	<!-- 配置页面
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
 		<launchConfigurationTabGroup type="com.gc.jef.launchConfigurations.JefConfiguration"
 			class="org.eclipse.jdt.internal.debug.ui.launcher.LocalJavaApplicationTabGroup"
@@ -87,7 +89,8 @@
 			class="org.eclipse.jdt.internal.debug.ui.launcher.LocalJavaApplicationTabGroup"
 			description="" id="com.gc.jef.launchConfigurations.JefWebConfigurationTabs" />
 	</extension>
-	<!-- 运行快捷菜单 -->
+	 -->
+	<!-- 运行快捷菜单 
 	<extension point="org.eclipse.debug.ui.launchShortcuts">
 		<shortcut class="com.gc.jef.launchConfigurations.JefLaunchShortcut"
 			id="com.gc.jef.launchConfigurations.JefLaunchShortcut"
@@ -112,4 +115,5 @@
 			</contextualLaunch>
 		</shortcut>
  	</extension>
+ 	-->
 </plugin>

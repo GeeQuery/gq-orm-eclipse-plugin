@@ -2,12 +2,12 @@ package com.gc.jef.actions.popup;
 
 import java.io.File;
 
-import jef.codegen.EntityCastor;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jface.action.IAction;
+
+import com.github.geequery.codegen.EntityCastor;
 
 public class EntityConvertAction extends AbstractAction {
 	EntityCastor ec = new EntityCastor();

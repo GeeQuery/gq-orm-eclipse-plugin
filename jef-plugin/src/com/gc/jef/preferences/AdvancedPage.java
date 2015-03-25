@@ -6,7 +6,7 @@ import java.io.IOException;
 import jef.common.Configuration;
 import jef.tools.IOUtils;
 import jef.ui.swt.GridLayoutHelper;
-import jef.ui.swt.GridLayoutHelper.ButtonListener;
+import jef.ui.swt.util.ButtonListener;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -26,7 +26,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.dialogs.PropertyPage;
 
-public class AdvancedPage extends PropertyPage implements IWorkbenchPreferencePage, ModifyListener, ButtonListener {
+public class AdvancedPage extends PropertyPage implements IWorkbenchPreferencePage, ModifyListener{
 	public static final String PROPERTIES_FILENAME=".jef";
 	
 	public AdvancedPage() {
@@ -49,13 +49,6 @@ public class AdvancedPage extends PropertyPage implements IWorkbenchPreferencePa
 	public void init(IWorkbench workbench) {
 	}
 
-	// 设置obd2Java
-	public void button1_onclick(Button button) {
-		FileDialog dialog = new FileDialog(button.getShell(), SWT.OPEN);
-		dialog.setFilterExtensions(new String[] { "obd2java.exe" });
-		String result=dialog.open();
-		if(result!=null)text1.setText(result);
-	}
 
 	// 设置OBD文件路径
 	public void button2_onclick(Button button) {
@@ -99,12 +92,20 @@ public class AdvancedPage extends PropertyPage implements IWorkbenchPreferencePa
 
 		GridLayoutHelper.createText(topComp, "obd2java.exe\u8DEF\u5F84:");
 		text1 = GridLayoutHelper.createTextInput(topComp,false);
-		GridLayoutHelper.createButton(topComp, "...", "button1_onclick", this,SWT.NONE);
+		GridLayoutHelper.createButton(topComp, "...", new ButtonListener(){
+			@Override
+			public void onClick(Button btn) {
+				FileDialog dialog = new FileDialog(btn.getShell(), SWT.OPEN);
+				dialog.setFilterExtensions(new String[] { "obd2java.exe" });
+				String result=dialog.open();
+				if(result!=null)text1.setText(result);
+			}
+		},SWT.NONE);
 
 		
 		GridLayoutHelper.createText(topComp, "工作目录");
 		text3 = GridLayoutHelper.createTextInput(topComp,false);
-		GridLayoutHelper.createButton(topComp, "...", "button3_onclick", this,SWT.NONE);
+		GridLayoutHelper.createButton(topComp, "...", null,SWT.NONE);
 
 		GridLayoutHelper.createText(topComp, "obd2Java运行参数:");
 		text4 = GridLayoutHelper.createTextInput(topComp,false);
@@ -113,8 +114,8 @@ public class AdvancedPage extends PropertyPage implements IWorkbenchPreferencePa
 		GridLayoutHelper.createText(topComp, "obd文件路径");
 		GridLayoutHelper.toNextRow(topComp);
 		//text2 = GridLayoutHelper.createTextInput(topComp);
-		GridLayoutHelper.createButton(topComp, "  Add   ", "button2_onclick", this,SWT.NONE);
-		GridLayoutHelper.createButton(topComp, " Remove ", "remove_onclick", this,SWT.NONE);
+//		GridLayoutHelper.createButton(topComp, "  Add   ", "button2_onclick", this,SWT.NONE);
+//		GridLayoutHelper.createButton(topComp, " Remove ", "remove_onclick", this,SWT.NONE);
 
 		table=GridLayoutHelper.createTable(topComp,new String[]{"Path"},new int[]{300},3);
 		

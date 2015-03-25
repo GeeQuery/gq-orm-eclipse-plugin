@@ -6,18 +6,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jef.codegen.MetaProvider;
-import jef.codegen.Metadata;
 import jef.common.wrapper.Holder;
-import jef.database.DbMetaData.TableInfo;
+import jef.database.meta.TableInfo;
 import jef.ui.model.TreeNode;
-import jef.ui.swt.GridLayoutHelper.ButtonListener;
 import jef.ui.swt.util.AbstractDialog;
 import jef.ui.swt.util.BeanBinding;
+import jef.ui.swt.util.ButtonListener;
 import jef.ui.swt.util.UIOper;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Tree;
+
+import com.github.geequery.codegen.MetaProvider;
+import com.github.geequery.codegen.Metadata;
 
 public class PlugInProvider implements MetaProvider,ButtonListener {
 	private Tree tree;
@@ -48,7 +49,7 @@ public class PlugInProvider implements MetaProvider,ButtonListener {
 						node.setChildren(childre.toArray(new TreeNode[childre.size()]));
 						tree=bind.createTree("list", node, 480, 2, true);
 						GridLayoutHelper.setHeight(tree, 500);
-						Button b=bind.createCheckBox(null,"Check All", "check", PlugInProvider.this);
+						Button b=bind.createCheckBox(null,"Check All", PlugInProvider.this);
 						b.setSelection(true);
 					}
 				};
@@ -63,7 +64,16 @@ public class PlugInProvider implements MetaProvider,ButtonListener {
 	}
 	
 	
-	public void check(Button button){
+	public String getSchema() {
+		return parentProvider.getSchema();
+	}
+
+	public Metadata getTableMetadata(String arg0) throws SQLException {
+		return parentProvider.getTableMetadata(arg0);
+	}
+
+	@Override
+	public void onClick(Button button) {
 		if(button.getSelection()){
 			for(int i=0; i<tree.getItemCount();i++){
 				tree.getItem(i).setChecked(true);
@@ -72,14 +82,6 @@ public class PlugInProvider implements MetaProvider,ButtonListener {
 			for(int i=0; i<tree.getItemCount();i++){
 				tree.getItem(i).setChecked(false);
 			}
-		}
-	}
-
-	public String getSchema() {
-		return parentProvider.getSchema();
-	}
-
-	public Metadata getTableMetadata(String arg0) throws SQLException {
-		return parentProvider.getTableMetadata(arg0);
+		}		
 	}
 }

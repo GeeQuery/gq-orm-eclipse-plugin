@@ -1,7 +1,6 @@
 package jef.ui.swt.util;
 
 import jef.ui.swt.GridLayoutHelper;
-import jef.ui.swt.GridLayoutHelper.ButtonListener;
 
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
@@ -17,7 +16,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-public abstract class AbstractDialog extends Dialog implements ButtonListener,ModifyListener {
+public abstract class AbstractDialog extends Dialog implements ModifyListener {
 	BeanBinding bind;
 	int layoutColumn;
 	
@@ -88,14 +87,14 @@ public abstract class AbstractDialog extends Dialog implements ButtonListener,Mo
 		c.setFont(JFaceResources.getDialogFont());
 		String okText=getOkButtonText();
 		if(okText!=null){
-			Button submit =GridLayoutHelper.createButton(c,okText , "ok",  this,SWT.NONE);
+			Button submit =GridLayoutHelper.createButton(c,okText , new OK(),SWT.NONE);
 			submit.setFont(JFaceResources.getDialogFont());
 			GridLayoutHelper.setAlignmentRight(submit);
 			bind.shell.setDefaultButton(submit);
 		}
 		String cacleText=getCancleButtonText();	
 		if(cacleText!=null){
-			Button button = GridLayoutHelper.createButton(c, cacleText, "cancle",  this,SWT.NONE);
+			Button button = GridLayoutHelper.createButton(c, cacleText,new Cancle(),SWT.NONE);
 			button.setFont(JFaceResources.getDialogFont());
 			GridLayoutHelper.setAlignmentRight(button);
 		}
@@ -109,17 +108,24 @@ public abstract class AbstractDialog extends Dialog implements ButtonListener,Mo
 		return " 取消 ";
 	}
 	
-	void ok(Button button) {
-		bind.updateBean();
-		boolean isValid = onExit(bind.bean);
-		if (isValid) {
-			bind.isCancle = false;
-			bind.shell.close();
+	class OK implements ButtonListener{
+		@Override
+		public void onClick(Button btn) {
+			bind.updateBean();
+			boolean isValid = onExit(bind.bean);
+			if (isValid) {
+				bind.isCancle = false;
+				bind.shell.close();
+			}
 		}
 	}
-
-	void cancle(Button button) {
-		bind.shell.close();
+	
+	class Cancle implements ButtonListener{
+		@Override
+		public void onClick(Button btn) {
+			bind.shell.close();
+		}
+		
 	}
 
 	protected abstract void createContents(BeanBinding bind);

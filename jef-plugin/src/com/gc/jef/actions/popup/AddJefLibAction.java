@@ -1,12 +1,11 @@
 package com.gc.jef.actions.popup;
 
-import jef.codegen.EntityCastor;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.action.IAction;
 
 import com.gc.jef.PluginHelper;
+import com.github.geequery.codegen.EntityCastor;
 
 public class AddJefLibAction extends AbstractAction {
 	EntityCastor ec = new EntityCastor();

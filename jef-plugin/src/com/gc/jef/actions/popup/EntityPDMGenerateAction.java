@@ -6,18 +6,14 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import jef.codegen.EntityGenerator;
-import jef.codegen.EntityProcessorCallback;
-import jef.codegen.MetaProvider.PDMProvider;
-import jef.codegen.Metadata;
-import jef.codegen.ast.JavaField;
-import jef.codegen.ast.JavaUnit;
+import jef.database.DbUtils;
+import jef.database.dialect.AbstractDialect;
 import jef.database.dialect.ColumnType;
-import jef.database.dialect.DbmsProfile;
 import jef.database.meta.Column;
 import jef.ui.swt.PlugInProvider;
 import jef.ui.swt.util.AbstractDialog;
 import jef.ui.swt.util.BeanBinding;
+import jef.ui.swt.util.ButtonListener;
 import jef.ui.swt.util.SWTUtils;
 
 import org.eclipse.core.resources.IResource;
@@ -33,6 +29,13 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Text;
+
+import com.github.geequery.codegen.EntityGenerator;
+import com.github.geequery.codegen.EntityProcessorCallback;
+import com.github.geequery.codegen.MetaProvider.PDMProvider;
+import com.github.geequery.codegen.Metadata;
+import com.github.geequery.codegen.ast.JavaField;
+import com.github.geequery.codegen.ast.JavaUnit;
 
 public class EntityPDMGenerateAction extends AbstractAction {
 	@Override
@@ -53,11 +56,11 @@ public class EntityPDMGenerateAction extends AbstractAction {
 		} else {
 			throw new IllegalArgumentException(obj.getClass().getName() + " is not supported!");
 		}
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("dbType", "oracle");
 		map.put("filename","");
 		map.put("pkgName", pkg);
-	
+		map.put("isDash2", false);
 		AbstractDialog dialog = new AbstractDialog(4) {
 			private Text file;
 			@Override
@@ -66,33 +69,36 @@ public class EntityPDMGenerateAction extends AbstractAction {
 				bind.createCombo("dbType", new String[] { "oracle", "derby", "mysql", "sqlServer", "sqLite", "db2" }, 100);
 				bind.expandToRowEnd(false);
 				file=bind.createTextInput("filename", 300, 3, false);
-				bind.createButton("...", "browseFile", this);
-			}
-			
-			@SuppressWarnings("unused")
-			protected void browseFile(Button button) {
-				String filename=SWTUtils.fileOpen("*.pdm");
-				if(filename!=null){
-					file.setText(filename);
-				}
+				bind.createButton("...",  new ButtonListener(){
+					@Override
+					public void onClick(Button btn) {
+						String filename=SWTUtils.fileOpen("*.pdm");
+						if(filename!=null){
+							file.setText(filename);
+						}
+						
+					}
+					
+				});
+				bind.createCheckBox("isDash2", "处理形如i_username格式的字段", null);
 			}
 		};
 		if (!dialog.open(map, "JEF Entity Generator", 200, 200)) {
 			return;
 		}
-		File file=new File(map.get("filename"));
+		File file=new File((String)map.get("filename"));
 		if(!file.exists() || file.isDirectory()){
 			SWTUtils.messageBox("File " + file +" not exist.");
 			return;
 		}
 		EntityGenerator g = new EntityGenerator();
 		g.setProvider(new PlugInProvider(new PDMProvider(file)));
-		g.setProfile(DbmsProfile.getProfile("oracle"));
+		g.setProfile(AbstractDialect.getProfile("oracle"));
 		g.setMaxTables(999);
 		g.setSrcFolder(source);
-		g.setBasePackage(map.get("pkgName"));
+		g.setBasePackage((String)map.get("pkgName"));
 		try {
-			MyJob job = new MyJob("OBD to Java Convert", obj, g);
+			MyJob job = new MyJob("OBD to Java Convert", obj, g, (Boolean) map.get("isDash2"));
 			job.addJobChangeListener(new JobChangeAdapter());
 			SWTUtils.perform(job);
 		} catch (InvocationTargetException e) {
@@ -105,11 +111,13 @@ public class EntityPDMGenerateAction extends AbstractAction {
 	class MyJob extends Job {
 		EntityGenerator g;
 		IJavaElement java;
+		Boolean isDash2;
 
-		public MyJob(String name, IJavaElement java, EntityGenerator g) {
+		public MyJob(String name, IJavaElement java, EntityGenerator g,Boolean isDash2) {
 			super(name);
 			this.java = java;
 			this.g = g;
+			this.isDash2=isDash2;
 		}
 
 		@Override
@@ -128,6 +136,13 @@ public class EntityPDMGenerateAction extends AbstractAction {
 				}
 
 				public void init(Metadata arg0, String arg1, String arg2, String arg3, JavaUnit arg4) {
+				}
+				public String columnToField(String columnName) {
+					if (Boolean.TRUE.equals(isDash2) && columnName.charAt(1) == '_' && columnName.length() > 2) {
+						return DbUtils.underlineToUpper(columnName.substring(2).toLowerCase(), false);
+					} else {
+						return DbUtils.underlineToUpper(columnName.toLowerCase(), false);
+					}
 				}
 			});
 			try {

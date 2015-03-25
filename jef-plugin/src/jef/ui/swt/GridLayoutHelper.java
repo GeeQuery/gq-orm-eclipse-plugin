@@ -1,17 +1,14 @@
 package jef.ui.swt;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import jef.tools.Assert;
 import jef.tools.StringUtils;
-import jef.tools.reflect.BeanUtils;
-import jef.tools.reflect.MethodEx;
+import jef.ui.swt.util.ButtonListener;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TreeNode;
 import org.eclipse.swt.SWT;
@@ -152,13 +149,13 @@ public class GridLayoutHelper {
 		Combo c = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		if (width > 0)
 			setWidth(c, width);
-		if(options!=null){
+		if (options != null) {
 			List<String> items = new ArrayList<String>();
 			for (Object obj : options) {
 				items.add(StringUtils.toString(obj));
 			}
 			c.setItems(items.toArray(ArrayUtils.EMPTY_STRING_ARRAY));
-			c.setData(options);	
+			c.setData(options);
 		}
 		return c;
 	}
@@ -232,38 +229,21 @@ public class GridLayoutHelper {
 	 * 
 	 * @author Administrator
 	 */
-	public static Button createButton(Composite c, String text, String onClick, final ButtonListener lis,int style) {
+	public static Button createButton(Composite c, String text, final ButtonListener lis, int style) {
 		try {
-			Button b = new Button(c, style);
+			final Button b = new Button(c, style);
 			b.setText(text);
-			if(StringUtils.isNotEmpty(onClick)){
-				final MethodEx m = BeanUtils.getCompatibleMethod(lis.getClass(), onClick, Button.class);
-				if (m == null) {
-					MessageDialog.openInformation(c.getShell(), "错误", "类" + lis.getClass().getName() + "中缺少方法" + onClick + "，不能创建按钮。");
-					throw new RuntimeException("类" + lis.getClass().getName() + "中缺少方法" + onClick + "，不能创建按钮。");
-				}
+			if(lis!=null){
 				b.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						Button c = (Button) e.getSource();
-						try {
-							m.invoke(lis, c);
-						} catch (IllegalArgumentException e1) {
-							System.err.println(m.getName());
-							e1.printStackTrace();
-						} catch (IllegalAccessException e1) {
-							System.err.println(m.getName());
-							e1.printStackTrace();
-						} catch (InvocationTargetException e1) {
-							System.err.println(m.getName());
-							e1.printStackTrace();
-						}
+						lis.onClick(c);
 					}
-				});
+				});	
 			}
 			return b;
 		} catch (SecurityException e1) {
-			MessageDialog.openInformation(c.getShell(), "错误", "类" + lis.getClass().getName() + "中方法" + onClick + "不可用，不能创建按钮。");
 			throw new RuntimeException(e1);
 		}
 	}
@@ -273,13 +253,16 @@ public class GridLayoutHelper {
 	 * 
 	 * @author Administrator
 	 */
-	public static Button createButton(Composite c, String text, int width, String onClick, final ButtonListener lis) {
+	public static Button createButton(Composite c, String text, int width, final ButtonListener lis) {
 		try {
-			final MethodEx m = BeanUtils.getCompatibleMethod(lis.getClass(), onClick, Button.class);
-			if (m == null) {
-				MessageDialog.openInformation(c.getShell(), "错误", "类" + lis.getClass().getName() + "中缺少方法" + onClick + "，不能创建按钮。");
-				throw new RuntimeException("类" + lis.getClass().getName() + "中缺少方法" + onClick + "，不能创建按钮。");
-			}
+			// final MethodEx m = BeanUtils.getCompatibleMethod(lis.getClass(),
+			// onClick, Button.class);
+			// if (m == null) {
+			// MessageDialog.openInformation(c.getShell(), "错误", "类" +
+			// lis.getClass().getName() + "中缺少方法" + onClick + "，不能创建按钮。");
+			// throw new RuntimeException("类" + lis.getClass().getName() +
+			// "中缺少方法" + onClick + "，不能创建按钮。");
+			// }
 			Button b = new Button(c, SWT.NONE);
 			b.setText(text);
 			setWidth(b, width);
@@ -287,15 +270,7 @@ public class GridLayoutHelper {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					Button c = (Button) e.getSource();
-					try {
-						m.invoke(lis, c);
-					} catch (IllegalArgumentException e1) {
-						e1.printStackTrace();
-					} catch (IllegalAccessException e1) {
-						e1.printStackTrace();
-					} catch (InvocationTargetException e1) {
-						e1.printStackTrace();
-					}
+					lis.onClick(c);
 				}
 			});
 			return b;
@@ -401,8 +376,8 @@ public class GridLayoutHelper {
 	}
 
 	// SWT.SINGLE、SWT.MULTI、SWT.CHECK. （单选，多选，可check）
-	public static Tree createTree(Composite topComp, jef.ui.model.TreeNode root, String defaultSelection, int width, int gridColSpan, int style,boolean hideRoot, Provider... providers) {
-		Tree tree = new Tree(topComp, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.VIRTUAL |style);
+	public static Tree createTree(Composite topComp, jef.ui.model.TreeNode root, String defaultSelection, int width, int gridColSpan, int style, boolean hideRoot, Provider... providers) {
+		Tree tree = new Tree(topComp, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.VIRTUAL | style);
 		Assert.notNull(root);
 		setColSpan(tree, gridColSpan);
 		setWidth(tree, width);
@@ -503,9 +478,6 @@ public class GridLayoutHelper {
 		}
 	}
 
-	public interface ButtonListener {
-	}
-
 	public static Table createTable(Composite topComp, String[] columns, int[] widths, int gridColSpan) {
 		Assert.isTrue(columns.length == widths.length, "The param columns and widths must be same length.");
 		Table table = new Table(topComp, SWT.BORDER | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -521,8 +493,8 @@ public class GridLayoutHelper {
 		return table;
 	}
 
-	public static org.eclipse.swt.widgets.List createList(Shell shell, Map<String, ?> items,boolean multi) {
-		org.eclipse.swt.widgets.List list = new org.eclipse.swt.widgets.List(shell, SWT.BORDER|(multi?SWT.MULTI:0)|SWT.V_SCROLL);
+	public static org.eclipse.swt.widgets.List createList(Shell shell, Map<String, ?> items, boolean multi) {
+		org.eclipse.swt.widgets.List list = new org.eclipse.swt.widgets.List(shell, SWT.BORDER | (multi ? SWT.MULTI : 0) | SWT.V_SCROLL);
 		list.setItems(items.keySet().toArray(new String[items.size()]));
 		list.setData(items);
 		return list;

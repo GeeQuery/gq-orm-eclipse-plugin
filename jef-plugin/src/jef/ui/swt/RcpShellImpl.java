@@ -15,9 +15,9 @@ import jef.ui.model.MListBox;
 import jef.ui.model.MTable;
 import jef.ui.model.MText;
 import jef.ui.model.MTree;
-import jef.ui.swt.GridLayoutHelper.ButtonListener;
 import jef.ui.swt.util.AbstractDialog;
 import jef.ui.swt.util.BeanBinding;
+import jef.ui.swt.util.ButtonListener;
 import jef.ui.swt.util.SWTUtils;
 import jef.ui.swt.util.SWTUtils.Columns;
 
@@ -118,9 +118,8 @@ public class RcpShellImpl {
 						bind.createText(m.getLabel());
 						final Text input=bind.createTextInput(m.getLabel(), ((MFile) m).getWidth(), 3, false);
 						final MFile model=(MFile)m;
-						bind.createButton("...", "run", new ButtonListener(){
-							@SuppressWarnings("unused")
-							public void run(Button b){
+						bind.createButton("...", new ButtonListener(){
+							public void onClick(Button b){
 								String str=StringUtils.join(model.getFilter(),";");
 								String result=null;
 								if(model.isOpen()){
@@ -137,9 +136,8 @@ public class RcpShellImpl {
 					}else if(m instanceof MFolderOpen){
 						bind.createText(m.getLabel());
 						final Text input=bind.createTextInput(m.getLabel(), ((MFolderOpen) m).getWidth(), 3, false);
-						bind.createButton("...", "run", new ButtonListener(){
-							@SuppressWarnings("unused")
-							public void run(Button b){
+						bind.createButton("...",  new ButtonListener(){
+							public void onClick(Button b){
 								String result=SWTUtils.folderOpen("",input.getText());
 								if(result!=null){
 									input.setText(result);

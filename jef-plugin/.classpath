@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry exported="true" kind="lib" path="lib/common-core-1.8.0.RELEASE.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/common-ioc-1.8.0.RELEASE.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/common-misc-1.8.0.RELEASE.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/common-net-1.8.0.RELEASE.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/common-orm-1.8.0.RELEASE.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ojdbc6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/common-core-2.0.0-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/common-orm-2.0.0-SNAPSHOT.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-lang-2.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/derby.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/ecj-4.2.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/geronimo-jpa_2.0_spec-1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/guava-14.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/javaparser-1.0.8.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jef-jasper.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jef-jetty-731.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jsp-api-2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/mysql-connector-java-5.1.18.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/ojdbc6-12.1.0.1.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/postgresql-9.2-1003-jdbc4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/servlet-api-2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/orm-code-generator-2.0.0-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/postgresql-9.4-1200-jdbc4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-1.7.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-simple-1.7.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/xercesImpl-2.9.1.jar"/>
