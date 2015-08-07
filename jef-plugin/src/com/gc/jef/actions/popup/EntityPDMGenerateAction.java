@@ -66,7 +66,7 @@ public class EntityPDMGenerateAction extends AbstractAction {
 			@Override
 			protected void createContents(BeanBinding bind) {
 				bind.createText("数据库类型：");
-				bind.createCombo("dbType", new String[] { "oracle", "derby", "mysql", "sqlServer", "sqLite", "db2" }, 100);
+				bind.createCombo("dbType", new String[] { "oracle", "derby", "mysql", "sqlserver", "sqlite", "db2" ,"postgresql"}, 100);
 				bind.expandToRowEnd(false);
 				file=bind.createTextInput("filename", 300, 3, false);
 				bind.createButton("...",  new ButtonListener(){
@@ -87,13 +87,14 @@ public class EntityPDMGenerateAction extends AbstractAction {
 			return;
 		}
 		File file=new File((String)map.get("filename"));
+		String dbType=(String) map.get("dbType");
 		if(!file.exists() || file.isDirectory()){
 			SWTUtils.messageBox("File " + file +" not exist.");
 			return;
 		}
 		EntityGenerator g = new EntityGenerator();
+		g.setProfile(AbstractDialect.getProfile(dbType));
 		g.setProvider(new PlugInProvider(new PDMProvider(file)));
-		g.setProfile(AbstractDialect.getProfile("oracle"));
 		g.setMaxTables(999);
 		g.setSrcFolder(source);
 		g.setBasePackage((String)map.get("pkgName"));

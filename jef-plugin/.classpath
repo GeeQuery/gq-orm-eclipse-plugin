@@ -6,7 +6,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/common-orm-2.0.0-SNAPSHOT.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-lang-2.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/geronimo-jpa_2.0_spec-1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/guava-14.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/guava-14.0.1.jar" sourcepath="D:/new_repositroy/com/google/guava/guava/14.0.1/guava-14.0.1-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/javaparser-1.0.8.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/mysql-connector-java-5.1.18.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/orm-code-generator-2.0.0-SNAPSHOT.jar"/>

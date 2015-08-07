@@ -17,7 +17,8 @@ import jef.tools.DateFormats;
 import jef.tools.DateUtils;
 import jef.tools.StringUtils;
 import jef.tools.reflect.BeanWrapperImpl;
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
+import jef.tools.reflect.ConvertUtils;
 import jef.ui.model.InputModel;
 import jef.ui.model.TreeNode;
 import jef.ui.swt.GridLayoutHelper;
@@ -337,7 +338,7 @@ public class BeanBinding {
 						DateFormat df = (DateFormat) control.getData("DateFormat");
 						w.setPropertyValue(fieldName, DateUtils.parse(str, df, null));
 					} else {
-						w.setPropertyValue(fieldName, ClassWrapper.toProperType(str, new ClassWrapper(c), null));
+						w.setPropertyValue(fieldName, ConvertUtils.toProperType(str, new ClassEx(c), null));
 					}
 				} else if (control instanceof Table) {
 					Table table = (Table) control;

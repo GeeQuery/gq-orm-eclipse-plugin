@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: jef-plugin
 Bundle-SymbolicName: jef-plugin;singleton:=true
-Bundle-Version: 1.3.104
+Bundle-Version: 1.3.105
 Bundle-Activator: com.gc.jef.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
